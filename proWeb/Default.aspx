@@ -4,45 +4,49 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="formContent" runat="server">
     <p class="subtitle">Product Management</p>
         <div>
-            <p>
-            Code <asp:TextBox id="code" TextMode="SingleLine" Columns="38" runat="server" style="position: absolute"/>
+            <p> <!-- Code is restricted to a range of 1-16 characters -->
+            Code&nbsp; <asp:TextBox id="code" TextMode="SingleLine" Columns="28" MinLength="1" MaxLength="16" runat="server" style="position: absolute" OnTextChanged="code_TextChanged"/>
             </p>
-            <p>
-                Name <asp:TextBox id="name" TextMode="SingleLine" Columns="40" runat="server" style="position: absolute"/>
+            <p> <!-- Name cannot exceed 32 characters -->
+                Name&nbsp; <asp:TextBox id="name" TextMode="SingleLine" Columns="29" MaxLength="32" runat="server" style="position: absolute" OnTextChanged="name_TextChanged"/>
             </p>
-            <p>
-                Amount <asp:TextBox ID ="amount" TextMode="SingleLine" Columns="20" runat="server" style="position: absolute"/>
+            <p> <!-- Figure out how to restrict range from 0-9999 -->
+                Amount&nbsp; <asp:TextBox ID ="amount" Columns="15" MinLength="1" MaxLength="4" runat="server" style="position: absolute" OnTextChanged="amount_TextChanged"/>
+                <asp:RangeValidator ID="rv1" runat="server" ControlToValidate="amount" MinimumValue="0" MaximumValue="9999" Type="Integer" ErrorMessage="Select 0-9999" ForeColor="Red">
+                </asp:RangeValidator>
+
             </p>
-            <p>
-                Category <asp:DropDownList id="category" runat="server" style="position: absolute" OnSelectedIndexChanged="category_SelectedIndexChanged">
-                    <asp:ListItem Selected="True" Value="computing">Computing</asp:ListItem>
+            <p>  <!-- Show a drop down menu, said menu has only 4 items -->
+                Category&nbsp; <asp:DropDownList id="category" runat="server" style="position: absolute" OnSelectedIndexChanged="category_SelectedIndexChanged">
+                    <asp:ListItem Value="computing">Computing</asp:ListItem>
                     <asp:ListItem Value="telephony">Telephony</asp:ListItem>
                     <asp:ListItem Value="gaming">Gaming</asp:ListItem>
                     <asp:ListItem Value="homeapps">Home appliances</asp:ListItem>
                     </asp:DropDownList>
             </p>
-            <p>
-                Price <asp:TextBox ID ="price" TextMode="SingleLine" Columns="16" runat="server" style="position: absolute"/>
+            <p> <!-- same issue as amount, but for floats -->
+                Price&nbsp; <asp:TextBox ID ="price" TextMode="SingleLine" Columns="15" runat="server" style="position: absolute" OnTextChanged="price_TextChanged"/>
+
             </p>
-            <p>
-                Creation Date <asp:TextBox ID ="date" TextMode="SingleLine" Columns="30" runat="server" style="position: absolute"/>
+            <p> <!-- maybe configure the format in the cs file? screw around with this later -->
+                Creation Date&nbsp; <asp:TextBox ID ="date" TextMode="SingleLine" Columns="19" runat="server" style="position: absolute" OnTextChanged="date_TextChanged"/>
             </p>
 
             <div>
-            <p> <!-- figure how to indent without spamming nbsp later-->
-                <asp:Button id="create" Text="Create" runat="server" />
-                &nbsp&nbsp&nbsp
-                <asp:Button id="update" Text="Update" runat="server" />
-                &nbsp&nbsp&nbsp
-                <asp:Button id="delete" Text="Delete" runat="server" />
-                &nbsp&nbsp&nbsp
-                <asp:Button id="read" Text="Read" runat="server" />
-                &nbsp&nbsp&nbsp
-                <asp:Button id="readfirst" Text="Read First" runat="server" />
-                &nbsp&nbsp&nbsp
-                <asp:Button id="readprev" Text="Read Prev" runat="server" />
-                &nbsp&nbsp&nbsp
-                <asp:Button id="readnext" Text="Read Next" runat="server" />
+            <p> 
+                <asp:Button id="create" Text="Create" runat="server" OnClick="create_Click" />
+                &nbsp
+                <asp:Button id="update" Text="Update" runat="server" OnClick="update_Click" />
+                &nbsp
+                <asp:Button id="delete" Text="Delete" runat="server" OnClick="delete_Click" />
+                &nbsp
+                <asp:Button id="read" Text="Read" runat="server" OnClick="read_Click" />
+                &nbsp
+                <asp:Button id="readfirst" Text="Read First" runat="server" OnClick="readfirst_Click" />
+                &nbsp
+                <asp:Button id="readprev" Text="Read Prev" runat="server" OnClick="readprev_Click" />
+                &nbsp
+                <asp:Button id="readnext" Text="Read Next" runat="server" OnClick="readnext_Click" />
             </p>
             </div>
         </div>

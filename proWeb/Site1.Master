@@ -13,7 +13,7 @@
             text-align: center;
             background: #33cccc;
             padding: 45px;
-            width:3.2vw;
+            width:16em;
         }
         .liststuff {
             position: absolute;
