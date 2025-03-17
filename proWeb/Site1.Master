@@ -1,0 +1,37 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="proWeb.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .title {
+            text-align: center;
+            background: #33cccc;
+            padding: 45px;
+            width:3.2vw;
+        }
+        .liststuff {
+            position: absolute;
+        }
+        .subtitle {
+            font-size:30px;
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+        Tamer Hawatmeh Goussous - 54795313K
+    <h1 class="title"> HADA P3 - CURSO 20XX/XX</h1>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="formContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>
