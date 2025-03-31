@@ -15,12 +15,12 @@
             padding: 45px;
             width:16em;
         }
-        .liststuff {
-            position: absolute;
-        }
         .subtitle {
             font-size:30px;
             font-weight:bold;
+        }
+        .liststuff {
+            position: absolute;
         }
     </style>
 </head>
