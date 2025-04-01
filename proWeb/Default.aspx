@@ -6,7 +6,7 @@
         <div>
             <!-- Código -->
             <p> 
-            Code&nbsp; <asp:TextBox id="code" 
+            Code&nbsp; <asp:TextBox id="codeInput" 
                         TextMode="SingleLine"
                         Columns="28"
                         MinLength="1"
@@ -17,7 +17,7 @@
             </p>
             <!-- Nombre -->
             <p> 
-                Name&nbsp; <asp:TextBox id="name"
+                Name&nbsp; <asp:TextBox id="nameInput"
                             TextMode="SingleLine"
                             Columns="29"
                             MaxLength="32"
@@ -28,7 +28,7 @@
             <!-- Cantidad -->
             <p> 
                 Amount&nbsp; 
-                <asp:TextBox ID ="amount"
+                <asp:TextBox ID ="amountInput"
                             Columns="15"
                             MinLength="1"
                             MaxLength="4"
@@ -38,7 +38,7 @@
                 <!-- Validación de entrada, rango tiene que ser entre 0-9999 -->
                 <asp:RangeValidator ID="amountRange"
                                     runat="server"
-                                    ControlToValidate="amount"
+                                    ControlToValidate="amountInput"
                                     MinimumValue="0" 
                                     MaximumValue="9999"
                                     Type="Integer"
@@ -50,20 +50,20 @@
             <!-- Menu drop down -->
             <p>  
                 Category&nbsp; 
-                    <asp:DropDownList id="category" 
+                    <asp:DropDownList id="categoryInput" 
                                 runat="server"
                                 style="position: absolute"
                                 OnSelectedIndexChanged="category_SelectedIndexChanged">
-                        <asp:ListItem Value="computing">Computing</asp:ListItem>
-                        <asp:ListItem Value="telephony">Telephony</asp:ListItem>
-                        <asp:ListItem Value="gaming">Gaming</asp:ListItem>
-                        <asp:ListItem Value="homeapps">Home appliances</asp:ListItem>
+                        <asp:ListItem Value="Computing">Computing</asp:ListItem>
+                        <asp:ListItem Value="Telephony">Telephony</asp:ListItem>
+                        <asp:ListItem Value="Gaming">Gaming</asp:ListItem>
+                        <asp:ListItem Value="Home appliances">Home appliances</asp:ListItem>
                     </asp:DropDownList>
             </p>
             <!-- Entrada del rango -->
             <p> 
                 Price&nbsp; 
-                <asp:TextBox ID="price"
+                <asp:TextBox ID="priceInput"
                     TextMode="SingleLine"
                     Columns="15"
                     runat="server" 
@@ -75,7 +75,7 @@
                 <!-- Validar si el precio está en rango-->
                 <asp:RangeValidator ID="priceRange"
                     runat="server"
-                    ControlToValidate="price" 
+                    ControlToValidate="priceInput" 
                     MinimumValue="0.0" 
                     MaximumValue="9999.99" 
                     Type="Double" 
@@ -86,7 +86,7 @@
             
             <p> <!-- maybe configure the format in the cs file? screw around with this later -->
                 Creation Date&nbsp; 
-                <asp:TextBox ID="date" 
+                <asp:TextBox ID="dateInput" 
                     TextMode="Date" 
                     Columns="19" 
                     AutoPostBack="true" 
@@ -94,6 +94,7 @@
                     style="position: absolute" 
                     OnTextChanged="date_TextChanged"/>
             </p>
+
 
             <div>
             <p> 
@@ -110,6 +111,9 @@
                 <asp:Button id="readprev" Text="Read Prev" runat="server" OnClick="readprev_Click" />
                 &nbsp
                 <asp:Button id="readnext" Text="Read Next" runat="server" OnClick="readnext_Click" />
+
+                <asp:Label ID="statusLabel" runat="server" ForeColor="Green" Font-Bold="true" />
+
             </p>
             </div>
         </div>

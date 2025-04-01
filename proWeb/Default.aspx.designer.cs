@@ -15,31 +15,31 @@ namespace proWeb
     {
 
         /// <summary>
-        /// Control code.
+        /// Control codeInput.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox code;
+        protected global::System.Web.UI.WebControls.TextBox codeInput;
 
         /// <summary>
-        /// Control name.
+        /// Control nameInput.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox name;
+        protected global::System.Web.UI.WebControls.TextBox nameInput;
 
         /// <summary>
-        /// Control amount.
+        /// Control amountInput.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox amount;
+        protected global::System.Web.UI.WebControls.TextBox amountInput;
 
         /// <summary>
         /// Control amountRange.
@@ -51,22 +51,22 @@ namespace proWeb
         protected global::System.Web.UI.WebControls.RangeValidator amountRange;
 
         /// <summary>
-        /// Control category.
+        /// Control categoryInput.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList category;
+        protected global::System.Web.UI.WebControls.DropDownList categoryInput;
 
         /// <summary>
-        /// Control price.
+        /// Control priceInput.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox price;
+        protected global::System.Web.UI.WebControls.TextBox priceInput;
 
         /// <summary>
         /// Control priceRange.
@@ -78,13 +78,13 @@ namespace proWeb
         protected global::System.Web.UI.WebControls.RangeValidator priceRange;
 
         /// <summary>
-        /// Control date.
+        /// Control dateInput.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox date;
+        protected global::System.Web.UI.WebControls.TextBox dateInput;
 
         /// <summary>
         /// Control create.
@@ -148,5 +148,14 @@ namespace proWeb
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button readnext;
+
+        /// <summary>
+        /// Control statusLabel.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label statusLabel;
     }
 }

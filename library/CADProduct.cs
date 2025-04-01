@@ -10,48 +10,247 @@ namespace library
 {
     public class CADProduct
     {
-        private string cadena;
+        private string constring;
 
         public CADProduct()
         {
-            this.cadena = ConfigurationManager.ConnectionStrings["miconexion"].ToString();
+            this.constring = ConfigurationManager.ConnectionStrings["miconexion"].ToString();
         }
+
 
         public bool Create(ENProduct en)
         {
-            SqlCommand com;
-            SqlConnection conn;
-            bool success = false;
             string query = "INSERT INTO Products(code, name, amount, category, price, creationDate) VALUES (@code, @name, @amount, @category, @price, @creationDate)";
 
             try
             {
-                conn = new SqlConnection = new SqlConnection(cadena);
-                conn.Open();
-                com = new SqlCommand(query, conn);
-                com.Parameters.AddWithValue("@code", en.code);
-                com.Parameters.AddWithValue("@name", en.name);
-                com.Parameters.AddWithValue("@amount", en.amount);
-                com.Parameters.AddWithValue("@price", en.price);
-                com.Parameters.AddWithValue("@category", en.category);
-                com.Parameters.AddWithValue("@creationDate", en.creationDate);
+                // Using block for the SqlConnection ensures that the connection is properly disposed of
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    conn.Open();
 
-                int rowAffect = com.ExecuteNonQuery();
-                success = rowAffect > 0;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR: DIPSHIT {e.Message}");
-            }
-            finally {
-                if (com != null)  // WHAT DO YOU MEAN ITS WITHIN THE FUCKING SCOPE
-                { 
-                    com.Dispose();
-                    conn.Close();
+                    // Using block for the SqlCommand ensures that the command is properly disposed of
+                    using (SqlCommand com = new SqlCommand(query, conn))
+                    {
+                        // Add parameters to the command with explicit types for safety
+                        com.Parameters.Add("@code", System.Data.SqlDbType.NVarChar).Value = en.code;
+                        com.Parameters.Add("@name", System.Data.SqlDbType.NVarChar).Value = en.name;
+                        com.Parameters.Add("@amount", System.Data.SqlDbType.Int).Value = en.amount;
+                        com.Parameters.Add("@category", System.Data.SqlDbType.NVarChar).Value = en.category;
+                        com.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = en.price;
+                        com.Parameters.Add("@creationDate", System.Data.SqlDbType.DateTime).Value = en.creationDate;
+
+                        // Execute the query
+                        int rowAffect = com.ExecuteNonQuery();
+                        return rowAffect > 0;
+                    }
                 }
-               
             }
-            return success;
-        }    
+            catch (SqlException e)
+            {
+                // Log the exception (consider using a logging library here)
+                Console.WriteLine($"ERROR creando producto: {e.Message}");
+                return false;
+            }
+        }
+
+        public bool Update(ENProduct en)
+        {
+            string query = "UPDATE Products SET name = @name, amount = @amount, category = @category, price = @price, creationDate = @creationDate WHERE code = @code";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    conn.Open();
+                    using (SqlCommand com = new SqlCommand(query, conn))
+                    {
+                        com.Parameters.AddWithValue("@code", en.code);
+                        com.Parameters.AddWithValue("@name", en.name);
+                        com.Parameters.AddWithValue("@amount", en.amount);
+                        com.Parameters.AddWithValue("@category", en.category);
+                        com.Parameters.AddWithValue("@price", en.price);
+                        com.Parameters.AddWithValue("@creationDate", en.creationDate);
+
+                        int rowAffect = com.ExecuteNonQuery();
+                        return rowAffect > 0;
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine($"ERROR actualizar: {e.Message}");
+                return false;
+            }
+        }
+
+        public bool Delete(ENProduct en)
+        {
+            string query = "DELETE FROM Products WHERE code = @code";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    conn.Open();
+                    using (SqlCommand com = new SqlCommand(query, conn))
+                    {
+                        com.Parameters.AddWithValue("@code", en.code);
+
+                        int rowAffect = com.ExecuteNonQuery();
+                        return rowAffect > 0;
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine($"ERROR borrar: {e.Message}");
+                return false;
+            }
+        }
+
+        public bool Read(ENProduct en)
+        {
+            string query = "SELECT * FROM Products WHERE code = @code";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    conn.Open();
+                    using (SqlCommand com = new SqlCommand(query, conn))
+                    {
+                        com.Parameters.AddWithValue("@code", en.code);
+
+                        using (SqlDataReader reader = com.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                en.name = reader["name"].ToString();
+                                en.amount = Convert.ToInt32(reader["amount"]);
+                                en.category = Convert.ToInt32(reader["category"]);  // category as int
+                                en.price = Convert.ToSingle(reader["price"]);
+                                en.creationDate = Convert.ToDateTime(reader["creationDate"]);
+                                return true;
+                            }
+                            return false;  // No se encontró el producto
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine($"ERROR al leer el producto: {e.Message}");
+                return false;
+            }
+        }
+
+        // Método para leer el primer producto
+        public bool ReadFirst(ENProduct en)
+        {
+            string query = "SELECT TOP 1 * FROM Products ORDER BY creationDate";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    conn.Open();
+                    using (SqlCommand com = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = com.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                en.code = reader["code"].ToString();
+                                en.name = reader["name"].ToString();
+                                en.amount = Convert.ToInt32(reader["amount"]);
+                                en.category = Convert.ToInt32(reader["category"]);  // category as int
+                                en.price = Convert.ToSingle(reader["price"]);
+                                en.creationDate = Convert.ToDateTime(reader["creationDate"]);
+                                return true;
+                            }
+                            return false;  // No hay productos en la base de datos
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine($"ERROR al leer el primer producto: {e.Message}");
+                return false;
+            }
+        }
+
+        // Método para leer el siguiente producto
+        public bool ReadNext(ENProduct en)
+        {
+            string query = "SELECT TOP 1 * FROM Products WHERE creationDate > @creationDate ORDER BY creationDate";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    conn.Open();
+                    using (SqlCommand com = new SqlCommand(query, conn))
+                    {
+                        com.Parameters.AddWithValue("@creationDate", en.creationDate);
+
+                        using (SqlDataReader reader = com.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                en.code = reader["code"].ToString();
+                                en.name = reader["name"].ToString();
+                                en.amount = Convert.ToInt32(reader["amount"]);
+                                en.category = Convert.ToInt32(reader["category"]);  // category as int
+                                en.price = Convert.ToSingle(reader["price"]);
+                                en.creationDate = Convert.ToDateTime(reader["creationDate"]);
+                                return true;
+                            }
+                            return false;  // No hay un siguiente producto
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine($"ERROR al leer el siguiente producto: {e.Message}");
+                return false;
+            }
+        }
+
+        // Método para leer el producto anterior
+        public bool ReadPrev(ENProduct en)
+        {
+            string query = "SELECT TOP 1 * FROM Products WHERE creationDate < @creationDate ORDER BY creationDate DESC";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(constring))
+                {
+                    conn.Open();
+                    using (SqlCommand com = new SqlCommand(query, conn))
+                    {
+                        com.Parameters.AddWithValue("@creationDate", en.creationDate);
+
+                        using (SqlDataReader reader = com.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                en.code = reader["code"].ToString();
+                                en.name = reader["name"].ToString();
+                                en.amount = Convert.ToInt32(reader["amount"]);
+                                en.category = Convert.ToInt32(reader["category"]);  // category as int
+                                en.price = Convert.ToSingle(reader["price"]);
+                                en.creationDate = Convert.ToDateTime(reader["creationDate"]);
+                                return true;
+                            }
+                            return false;  // No hay un producto anterior
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine($"ERROR al leer el producto anterior: {e.Message}");
+                return false;
+            }
+        }
     }
 }
+    
