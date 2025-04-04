@@ -27,6 +27,7 @@ namespace library
             set { _creationDate = value; }
         }
 
+
         public ENProduct()
         {
         }

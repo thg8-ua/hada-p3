@@ -200,22 +200,23 @@ namespace library
                                 en.code = reader["code"].ToString();
                                 en.name = reader["name"].ToString();
                                 en.amount = Convert.ToInt32(reader["amount"]);
-                                en.category = Convert.ToInt32(reader["category"]);  // category as int
+                                en.category = Convert.ToInt32(reader["category"]);
                                 en.price = Convert.ToSingle(reader["price"]);
                                 en.creationDate = Convert.ToDateTime(reader["creationDate"]);
-                                return true;
+                                return true;  // Found the next product
                             }
-                            return false;  // No hay un siguiente producto
+                            return false;  // No next product
                         }
                     }
                 }
             }
             catch (SqlException e)
             {
-                Console.WriteLine($"ERROR al leer el siguiente producto: {e.Message}");
+                Console.WriteLine($"ERROR while reading the next product: {e.Message}");
                 return false;
             }
         }
+
 
         // Método para leer el producto anterior
         public bool ReadPrev(ENProduct en)
@@ -237,19 +238,19 @@ namespace library
                                 en.code = reader["code"].ToString();
                                 en.name = reader["name"].ToString();
                                 en.amount = Convert.ToInt32(reader["amount"]);
-                                en.category = Convert.ToInt32(reader["category"]);  
+                                en.category = Convert.ToInt32(reader["category"]);
                                 en.price = Convert.ToSingle(reader["price"]);
                                 en.creationDate = Convert.ToDateTime(reader["creationDate"]);
-                                return true;
+                                return true;  // Found the previous product
                             }
-                            return false;  // No hay un producto anterior
+                            return false;  // No previous product
                         }
                     }
                 }
             }
             catch (SqlException e)
             {
-                Console.WriteLine($"ERROR al leer el producto anterior: {e.Message}");
+                Console.WriteLine($"ERROR while reading the previous product: {e.Message}");
                 return false;
             }
         }

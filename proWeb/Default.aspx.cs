@@ -12,10 +12,28 @@ namespace proWeb
 {
     public partial class Default : System.Web.UI.Page
     {
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ENProduct product = new ENProduct();
+            if (!IsPostBack)
+            {
+                // Create an instance of the CADCategory class
+                CADCategory cadCategory = new CADCategory();
+
+                // Get all categories from the database
+                List<ENCategory> categories = cadCategory.readAll();
+
+                // Bind the categories to the dropdown list
+                categoryInput.DataSource = categories;
+                categoryInput.DataTextField = "Name";  
+                categoryInput.DataValueField = "Id";  
+                categoryInput.DataBind();
+
+                // Optionally, add a default "Please select" item
+                categoryInput.Items.Insert(0, new ListItem("Please select a category", ""));
+            }
         }
+
 
         protected void code_TextChanged(object sender, EventArgs e)
         {
