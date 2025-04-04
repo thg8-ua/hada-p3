@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -52,9 +53,14 @@ namespace proWeb
                 string code = codeInput.Text;
                 string name = nameInput.Text;
                 int amount = int.Parse(amountInput.Text);
-                float price = float.Parse(priceInput.Text);
+                float price = float.Parse(priceInput.Text.Replace(',', '.'), CultureInfo.InvariantCulture);
                 int category = int.Parse(categoryInput.SelectedValue);
-                DateTime creationDate = DateTime.Parse(dateInput.Text);
+                DateTime creationDate = DateTime.ParseExact(
+                    dateInput.Text,
+                    "dd/MM/yyyy HH:mm:ss",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None
+                );
 
                 return new ENProduct(code, name, amount, price, category, creationDate);
             }
@@ -69,6 +75,35 @@ namespace proWeb
                 statusLabel.Text = $"ERROR: {ex.Message}";
                 statusLabel.ForeColor = System.Drawing.Color.Red;
                 return null; // Return null for general exceptions
+            }
+        }
+        protected string GetCategoryName(int categoryId)
+        {
+            switch (categoryId)
+            {
+                case 1: return "Computing";
+                case 2: return "Telephony";
+                case 3: return "Gaming";
+                case 4: return "Home appliances";
+                default: return "Unknown";
+            }
+        }
+        protected void DisplayProductInGrid(ENProduct product, string successMessage)
+        {
+            if (product != null)
+            {
+                List<ENProduct> products = new List<ENProduct> { product };
+                productGrid.DataSource = products;
+                productGrid.DataBind();
+                productGrid.Visible = true;
+                statusLabel.Text = successMessage;
+                statusLabel.ForeColor = System.Drawing.Color.Green;
+            }
+            else
+            {
+                productGrid.Visible = false;
+                statusLabel.Text = "Product operation has failed.";
+                statusLabel.ForeColor = System.Drawing.Color.Red;
             }
         }
         protected void create_Click(object sender, EventArgs e)
@@ -109,10 +144,11 @@ namespace proWeb
 
         protected void delete_Click(object sender, EventArgs e)
         {
-            ENProduct newProduct = GetProductFromInputs();
-            if (newProduct == null) return;
+            ENProduct product = new ENProduct();
+            product.code = codeInput.Text;
+            if (product == null) return;
 
-            bool isDeleted = newProduct.Delete();
+            bool isDeleted = product.Delete();
             if (isDeleted)
             {
                 statusLabel.Text = "Product Deleted";
@@ -127,72 +163,70 @@ namespace proWeb
 
         protected void read_Click(object sender, EventArgs e)
         {
-            ENProduct newProduct = GetProductFromInputs();
-            if (newProduct == null) return;
+            ENProduct product = new ENProduct();
+            product.code = codeInput.Text;
+            if (product == null) return;
 
-            bool isRead = newProduct.Read();
-            if (isRead)
+            if (product.Read())
             {
-                statusLabel.Text = "Product read successfully!";
-                statusLabel.ForeColor = System.Drawing.Color.Green;
+                DisplayProductInGrid(product, "Product found!");
             }
             else
             {
-                statusLabel.Text = "Product operation has failed.";
+                productGrid.Visible = false;
+                statusLabel.Text = "Product not found";
                 statusLabel.ForeColor = System.Drawing.Color.Red;
             }
         }
 
         protected void readfirst_Click(object sender, EventArgs e)
         {
-            ENProduct newProduct = GetProductFromInputs();
-            if (newProduct == null) return;
-
-            bool isRead = newProduct.ReadFirst();
-            if (isRead)
+            ENProduct product = new ENProduct();
+            if (product.ReadFirst())
             {
-                statusLabel.Text = "First product read successfully!";
-                statusLabel.ForeColor = System.Drawing.Color.Green;
+                DisplayProductInGrid(product, "First product loaded!");
+                
             }
             else
             {
-                statusLabel.Text = "Product operation has failed.";
+                productGrid.Visible = false;
+                statusLabel.Text = "No products found";
                 statusLabel.ForeColor = System.Drawing.Color.Red;
             }
         }
 
         protected void readprev_Click(object sender, EventArgs e)
         {
-            ENProduct newProduct = GetProductFromInputs();
-            if (newProduct == null) return;
+            ENProduct currentProduct = GetProductFromInputs();
+            if (currentProduct == null) return;
 
-            bool isRead = newProduct.ReadPrev();
-            if (isRead)
+            if (currentProduct.ReadPrev())
             {
-                statusLabel.Text = "Previous product read successfully!";
-                statusLabel.ForeColor = System.Drawing.Color.Green;
+                DisplayProductInGrid(currentProduct, "Previous product loaded!");
+                
             }
             else
             {
-                statusLabel.Text = "Product operation has failed.";
+                productGrid.Visible = false;
+                statusLabel.Text = "No previous product found";
                 statusLabel.ForeColor = System.Drawing.Color.Red;
             }
         }
 
         protected void readnext_Click(object sender, EventArgs e)
         {
-            ENProduct newProduct = GetProductFromInputs();
-            if (newProduct == null) return;
+            ENProduct currentProduct = GetProductFromInputs();
+            if (currentProduct == null) return;
 
-            bool isRead = newProduct.ReadNext();
-            if (isRead)
+            if (currentProduct.ReadNext())
             {
-                statusLabel.Text = "Next product read successfully!";
-                statusLabel.ForeColor = System.Drawing.Color.Green;
+                DisplayProductInGrid(currentProduct, "Next product loaded!");
+                
             }
             else
             {
-                statusLabel.Text = "Product operation has failed.";
+                productGrid.Visible = false;
+                statusLabel.Text = "No next product found";
                 statusLabel.ForeColor = System.Drawing.Color.Red;
             }
         }

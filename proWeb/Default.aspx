@@ -54,10 +54,10 @@
                                 runat="server"
                                 style="position: absolute"
                                 OnSelectedIndexChanged="category_SelectedIndexChanged">
-                        <asp:ListItem Value="Computing">Computing</asp:ListItem>
-                        <asp:ListItem Value="Telephony">Telephony</asp:ListItem>
-                        <asp:ListItem Value="Gaming">Gaming</asp:ListItem>
-                        <asp:ListItem Value="Home appliances">Home appliances</asp:ListItem>
+                        <asp:ListItem Value="1">Computing</asp:ListItem>
+                        <asp:ListItem Value="2">Telephony</asp:ListItem>
+                        <asp:ListItem Value="3">Gaming</asp:ListItem>
+                        <asp:ListItem Value="4">Home appliances</asp:ListItem>
                     </asp:DropDownList>
             </p>
             <!-- Entrada del rango -->
@@ -78,18 +78,16 @@
                     ControlToValidate="priceInput" 
                     MinimumValue="0.0" 
                     MaximumValue="9999.99" 
-                    Type="Double" 
                     ErrorMessage="Select 0-9999" 
                     ForeColor="Red"
                     CultureInvariantValues="true" /> <!-- Para usar punto o coma -->
             </p>
             
-            <p> <!-- maybe configure the format in the cs file? screw around with this later -->
+            <p> 
                 Creation Date&nbsp; 
                 <asp:TextBox ID="dateInput" 
-                    TextMode="Date" 
+                    TextMode="DateTime" 
                     Columns="19" 
-                    AutoPostBack="true" 
                     runat="server" 
                     style="position: absolute" 
                     OnTextChanged="date_TextChanged"/>
@@ -117,4 +115,21 @@
             </p>
             </div>
         </div>
+        <div style="margin-top:20px;">
+        <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="False"
+            CssClass="product-table" Visible="false">
+            <Columns>
+                <asp:BoundField DataField="Code" HeaderText="Code" />
+                <asp:BoundField DataField="Name" HeaderText="Name" />
+                <asp:BoundField DataField="Amount" HeaderText="Amount" />
+                <asp:BoundField DataField="Price" HeaderText="Price" DataFormatString="{0:F2}" />
+                <asp:TemplateField HeaderText="Category">
+                    <ItemTemplate>
+                        <%# GetCategoryName(Convert.ToInt32(Eval("Category"))) %>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:BoundField DataField="CreationDate" HeaderText="Created" DataFormatString="{0:dd/MM/yyyy HH:mm:ss}" />
+            </Columns>
+        </asp:GridView>
+    </div>
 </asp:Content>

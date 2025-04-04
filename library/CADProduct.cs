@@ -14,9 +14,11 @@ namespace library
 
         public CADProduct()
         {
-            this.constring = ConfigurationManager.ConnectionStrings["miconexion"].ToString();
+            this.constring = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
+            
         }
 
+  
 
         public bool Create(ENProduct en)
         {
@@ -36,9 +38,9 @@ namespace library
                         com.Parameters.Add("@code", System.Data.SqlDbType.NVarChar).Value = en.code;
                         com.Parameters.Add("@name", System.Data.SqlDbType.NVarChar).Value = en.name;
                         com.Parameters.Add("@amount", System.Data.SqlDbType.Int).Value = en.amount;
-                        com.Parameters.Add("@category", System.Data.SqlDbType.NVarChar).Value = en.category;
-                        com.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = en.price;
-                        com.Parameters.Add("@creationDate", System.Data.SqlDbType.DateTime).Value = en.creationDate;
+                        com.Parameters.Add("@category", System.Data.SqlDbType.Int).Value = en.category;
+                        com.Parameters.Add("@price", System.Data.SqlDbType.Float).Value = en.price;
+                        com.Parameters.Add("@creationDate", System.Data.SqlDbType.DateTime2).Value = en.creationDate;
 
                         // Execute the query
                         int rowAffect = com.ExecuteNonQuery();
@@ -235,7 +237,7 @@ namespace library
                                 en.code = reader["code"].ToString();
                                 en.name = reader["name"].ToString();
                                 en.amount = Convert.ToInt32(reader["amount"]);
-                                en.category = Convert.ToInt32(reader["category"]);  // category as int
+                                en.category = Convert.ToInt32(reader["category"]);  
                                 en.price = Convert.ToSingle(reader["price"]);
                                 en.creationDate = Convert.ToDateTime(reader["creationDate"]);
                                 return true;

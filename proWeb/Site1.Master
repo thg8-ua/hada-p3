@@ -22,6 +22,22 @@
         .liststuff {
             position: absolute;
         }
+
+            .product-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    .product-table th {
+        background-color: #f8f9fa;
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    .product-table td {
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
     </style>
 </head>
 <body>
