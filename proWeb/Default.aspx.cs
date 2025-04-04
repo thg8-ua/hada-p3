@@ -199,7 +199,7 @@ namespace proWeb
 
         protected void readfirst_Click(object sender, EventArgs e)
         {
-            ENProduct product = new ENProduct();
+            ENProduct product = GetProductFromInputs();
             if (product.ReadFirst())
             {
                 DisplayProductInGrid(product, "First product loaded!");
